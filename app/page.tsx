@@ -10,7 +10,15 @@ import { fuels, yearsOfProduction } from '@/constants';
 import { fetchCars } from '@/utils';
 import Image from 'next/image';
 
-export default async function Home({searchParams}) {
+interface SearchParamsProps {
+  manufacturer: string;
+  year: number;
+  fuel: string;
+  limit: number;
+  model: string;
+}
+export default async function Home({searchParams}: {searchParams: SearchParamsProps}) {
+  const typedSearchParams = searchParams as SearchParamsProps;
 
   const allCars = await fetchCars({
     manufacturer: searchParams.manufacturer || '',
@@ -19,6 +27,8 @@ export default async function Home({searchParams}) {
     limit: searchParams.limit || 10,
     model: searchParams.model || '',
   });
+  
+  console.log(searchParams);
 
   const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
 
